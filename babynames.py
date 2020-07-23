@@ -47,25 +47,25 @@ def extract_names(filename):
         text = f.read()
     
     names = []
-    
-    pattern = r'Popularity in \d\d\d\d'
+
+    pattern = r'Popularity in (\d\d\d\d)'
     year_match = re.search(pattern, text)
     year = year_match.group(1)
     names.append(year)
 
-    pattern = r'<td>\d+</td><td>\w+</td><td>\w+</td>'
-    name_ranks = re.findall(pattern, text)
+    pattern = r'<td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>'
+    names_ranks = re.findall(pattern, text)
     names_to_rank = {}
-    for rank_tuple in name_ranks:
+    for rank_tuple in names_ranks:
         rank, boy_name, girl_name = rank_tuple
         if boy_name not in names_to_rank:
             names_to_rank[boy_name] = rank
         if girl_name not in names_to_rank:
             names_to_rank[girl_name] = rank
 
-    sorted_names = sorted(names_to_rank.keys())
+    sorted_names = sorted(names_to_rank.items())
     for name, rank in sorted_names:
-        name.append(f"{name} {rank}")
+        names.append(f"{name} {rank}")
     return names
 
 
